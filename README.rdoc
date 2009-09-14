@@ -43,11 +43,13 @@ A tiny DSL for non-trivial bloopsaphone projects.
 
 +sound+ initialises a bloopsaphone sound and defines a handy method for you. That's not the interesting part.
 
-== The Interesting Part
+=== The Interesting Part
 
 +phrase+ defines a 32-beat phrase. Any instruments to which you don't assign a tune in the block are told to rest for 32 beats.
 
 This makes it easy to decompose sections of your song into methods and repeat or comment out calls to them, which is something you'll definitely want to be doing if your song is more than 10 seconds long.
+
+Yeah, that's it. There's definitely potential for more though! Like, well, I don't know. Potential, though.
 
 == Copyright
 
