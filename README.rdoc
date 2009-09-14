@@ -1,17 +1,53 @@
 = feepogram
 
-Description goes here.
+A tiny DSL for non-trivial bloopsaphone projects.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+== Briefly
+
+  require 'bloops'
+  require 'feepogram'
+
+  bloops = Bloops.new
+  bloops.tempo = 320
+
+  song = Feepogram.new(bloops) do
+    sound :crunch, Bloops::NOISE do |s|
+      s.punch = 0.5
+    end
+
+    sound :oooo, Bloops::SINE do |s|
+      s.sustain = 2.0
+    end
+
+    sound :plink, Bloops::SQUARE do |s|
+      s.punch = 1.0
+    end
+
+    2.times do
+      phrase do
+        oooo   " 1:c2 " * 8
+        plink  " c d e f g a b + c - " * 4
+      end
+
+      phrase do
+        crunch " c2 4 c5 4 " * 8
+        oooo   " 1:g2 " * 8
+        plink  " c d e f g a b + c - " * 4
+      end
+    end
+  end
+
+  song.play
+
+== Right, So
+
++sound+ initialises a bloopsaphone sound and defines a handy method for you. That's not the interesting part.
+
+== The Interesting Part
+
++phrase+ defines a 32-beat phrase. Any instruments to which you don't assign a tune in the block are told to rest for 32 beats.
+
+This makes it easy to decompose sections of your song into methods and repeat or comment out calls to them, which is something you'll definitely want to be doing if your song is more than 10 seconds long.
 
 == Copyright
 
