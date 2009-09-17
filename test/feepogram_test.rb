@@ -21,17 +21,24 @@ class FeepogramTest < Test::Unit::TestCase
         s.punch = 1.0
       end
 
-      2.times do
+      def and_one
         phrase do
           oooo   " 1:c2 " * 8
           plink  " c d e f g a b + c - " * 4
         end
+      end
 
+      def and_two
         phrase do
           crunch " c2 4 c5 4 " * 8
           oooo   " 1:g2 " * 8
           plink  " c d e f g a b + c - " * 4
         end
+      end
+
+      2.times do
+        and_one
+        and_two
       end
     end
 
