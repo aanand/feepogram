@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    feepogram (0.0.1)
+      bloopsaphone
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    bloopsaphone (0.4)
+    shoulda (2.11.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bloopsaphone
+  feepogram!
+  shoulda

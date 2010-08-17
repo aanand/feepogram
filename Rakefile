@@ -1,56 +1,38 @@
 require 'rubygems'
-require 'rake'
 
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "feepogram"
-    gem.summary = %Q{A tiny DSL for non-trivial bloopsaphone projects.}
-    gem.description = %Q{A tiny DSL for non-trivial bloopsaphone projects.}
-    gem.email = "aanand.prasad@gmail.com"
-    gem.homepage = "http://github.com/aanand/feepogram"
-    gem.authors = ["Aanand Prasad"]
-    gem.add_development_dependency "thoughtbot-shoulda"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
+  require 'rake'
+  require 'rake/testtask'
 rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end
-
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
-end
-
-begin
-  require 'rcov/rcovtask'
-  Rcov::RcovTask.new do |test|
-    test.libs << 'test'
+  task(:test) { $stderr.puts '`gem install rake` to run tests' }
+else
+  Rake::TestTask.new(:test) do |test|
+    test.libs << 'lib' << 'test'
     test.pattern = 'test/**/*_test.rb'
     test.verbose = true
   end
+end
+
+def gemspec
+  @gemspec ||= begin
+    file = File.expand_path('../feepogram.gemspec', __FILE__)
+    eval(File.read(file), binding, file)
+  end
+end
+
+begin
+  require 'rake/gempackagetask'
 rescue LoadError
-  task :rcov do
-    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+  task(:gem) { $stderr.puts '`gem install rake` to package gems' }
+else
+  Rake::GemPackageTask.new(gemspec) do |pkg|
+    pkg.gem_spec = gemspec
   end
+  task :gem => :gemspec
 end
 
-task :test => :check_dependencies
-
-task :default => :test
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  if File.exist?('VERSION')
-    version = File.read('VERSION')
-  else
-    version = ""
-  end
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "feepogram #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+desc "validate the gemspec"
+task :gemspec do
+  gemspec.validate
 end
+
